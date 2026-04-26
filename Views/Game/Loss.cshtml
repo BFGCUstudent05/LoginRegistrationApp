@@ -1,0 +1,43 @@
+@model MinesweeperWeb.Models.GameBoardViewModel
+@{
+    ViewData["Title"] = "Game Over";
+    var board = Model.Board;
+}
+
+<link rel="stylesheet" href="~/css/minesweeper.css" />
+
+<div class="text-center mt-4">
+    <h1 class="display-4 text-danger">Game Over</h1>
+    <p class="lead">You hit a mine! Time: @Model.ElapsedTime</p>
+</div>
+
+<div class="d-flex justify-content-center my-4">
+    <div class="game-board" style="grid-template-columns: repeat(@board.Size, 40px);">
+        @for (int row = 0; row < board.Size; row++)
+        {
+            @for (int col = 0; col < board.Size; col++)
+            {
+                var cell = board.Cells[row][col];
+                @if (cell.IsBomb)
+                {
+                    <div class="cell-btn cell-revealed cell-bomb">&#x1F4A3;</div>
+                }
+                else if (cell.NumberOfBombNeighbors > 0)
+                {
+                    <div class="cell-btn cell-revealed cell-number-@cell.NumberOfBombNeighbors">
+                        @cell.NumberOfBombNeighbors
+                    </div>
+                }
+                else
+                {
+                    <div class="cell-btn cell-revealed cell-empty"></div>
+                }
+            }
+        }
+    </div>
+</div>
+
+<div class="text-center mt-3">
+    <a asp-action="StartGame" class="btn btn-primary btn-lg">Try Again</a>
+    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary btn-lg ms-2">Home</a>
+</div>

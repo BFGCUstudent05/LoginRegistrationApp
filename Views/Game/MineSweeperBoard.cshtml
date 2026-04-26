@@ -1,0 +1,63 @@
+@model MinesweeperWeb.Models.GameBoardViewModel
+@{
+    ViewData["Title"] = "Minesweeper";
+    var board = Model.Board;
+}
+
+<link rel="stylesheet" href="~/css/minesweeper.css" />
+
+<div class="text-center mb-3">
+    <h2>Minesweeper</h2>
+    <div class="d-flex justify-content-center gap-4">
+        <span class="badge bg-secondary">Size: @board.Size x @board.Size</span>
+        <span class="badge bg-secondary">Difficulty: @(board.Difficulty switch { 1 => "Easy", 2 => "Medium", 3 => "Hard", _ => "Unknown" })</span>
+        <span class="badge bg-secondary" id="timer">Time: @Model.ElapsedTime</span>
+    </div>
+</div>
+
+<div class="d-flex justify-content-center">
+    <div class="game-board" style="grid-template-columns: repeat(@board.Size, 40px);">
+        @for (int row = 0; row < board.Size; row++)
+        {
+            @for (int col = 0; col < board.Size; col++)
+            {
+                var cell = board.Cells[row][col];
+                @if (!cell.IsVisited)
+                {
+                    <form asp-action="HandleCellClick" method="post" class="cell-form">
+                        <input type="hidden" name="row" value="@row" />
+                        <input type="hidden" name="col" value="@col" />
+                        <button type="submit" class="cell-btn cell-hidden" title="Row @row, Col @col"></button>
+                    </form>
+                }
+                else if (cell.NumberOfBombNeighbors > 0)
+                {
+                    <div class="cell-btn cell-revealed cell-number-@cell.NumberOfBombNeighbors">
+                        @cell.NumberOfBombNeighbors
+                    </div>
+                }
+                else
+                {
+                    <div class="cell-btn cell-revealed cell-empty"></div>
+                }
+            }
+        }
+    </div>
+</div>
+
+<script>
+    (function () {
+        var startUtc = new Date("@board.StartTime.ToString("o")");
+        var timerEl = document.getElementById("timer");
+
+        function update() {
+            var elapsed = Math.floor((Date.now() - startUtc.getTime()) / 1000);
+            var mins = Math.floor(elapsed / 60);
+            var secs = elapsed % 60;
+            timerEl.textContent = "Time: " + mins + ":" + (secs < 10 ? "0" : "") + secs;
+        }
+
+        update();
+        setInterval(update, 1000);
+    })();
+</script>

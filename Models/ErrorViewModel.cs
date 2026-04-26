@@ -1,4 +1,4 @@
-namespace LoginRegistrationApp.Models;
+namespace MinesweeperWeb.Models;
 
 public class ErrorViewModel
 {

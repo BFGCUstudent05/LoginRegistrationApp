@@ -1,0 +1,24 @@
+@model MinesweeperWeb.Models.ScoreModel
+@{
+    ViewData["Title"] = "You Win!";
+}
+
+<div class="text-center mt-5">
+    <h1 class="display-3 text-success">You Win!</h1>
+    <p class="lead">Congratulations! You cleared the board!</p>
+
+    <div class="card mx-auto mt-4" style="max-width: 400px;">
+        <div class="card-body">
+            <h2 class="card-title">Score: @Model.Score</h2>
+            <hr />
+            <p><strong>Board Size:</strong> @Model.BoardSize x @Model.BoardSize</p>
+            <p><strong>Difficulty:</strong> @Model.Difficulty</p>
+            <p><strong>Time:</strong> @Model.ElapsedTime</p>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a asp-action="StartGame" class="btn btn-primary btn-lg">Play Again</a>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary btn-lg ms-2">Home</a>
+    </div>
+</div>

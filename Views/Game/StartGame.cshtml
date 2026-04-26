@@ -1,0 +1,42 @@
+@model MinesweeperWeb.Models.StartGameViewModel
+@{
+    ViewData["Title"] = "Start Game";
+}
+
+<div class="text-center">
+    <h2>Start New Game</h2>
+    <p class="text-muted">Choose your board size and difficulty level</p>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <form asp-action="StartGame" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="BoardSize" class="form-label"></label>
+                <select asp-for="BoardSize" class="form-select">
+                    <option value="8">8 x 8</option>
+                    <option value="10">10 x 10</option>
+                    <option value="12">12 x 12</option>
+                    <option value="16">16 x 16</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Difficulty" class="form-label"></label>
+                <select asp-for="Difficulty" class="form-select">
+                    <option value="1">Easy (10% mines)</option>
+                    <option value="2">Medium (15% mines)</option>
+                    <option value="3">Hard (20% mines)</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg w-100">Start Game</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
